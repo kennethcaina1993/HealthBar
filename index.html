@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Monster Healtbar</title>
+  <title>Monster Healthbar</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -24,11 +24,28 @@
         <div class="healthbar-value" :style="playerBarStyles"></div>
       </div>
     </section>
-    <section id="controls">
-      <button v-on:click="AttackMonster()">ATTACK</button>
-      <button>SPECIAL ATTACK</button>
-      <button>HEAL</button>
-      <button>SURRENDER</button>
+    <section class="container" v-if="winner">
+      <h2>Game Over!</h2>
+      <h2 v-if="winner === 'monster'">You Lost!</h2>
+      <h2 v-else-if="winner === 'player'">You Won!</h2>
+      <h2 v-else>I'ts a Draw!</h2>
+      <button @click="startNewGame">Start New Game</button>
+    </section>
+    <section id="controls" v-else>
+      <button @click="AttackMonster">ATTACK</button>
+      <button :disabled="mayUseSpecialAttack" @click="SpecialAttack">SPECIAL ATTACK</button>
+      <button @click="healPlayer">HEAL</button>
+      <button @click="surrender">SURRENDER</button>
+    </section>
+
+    <section id="log" class="container">
+      <h2>Battle Log</h2>
+      <ul>
+        <li v-for="logMessage in logMessages">
+      {{logMessage.actionBy}} - {{logMessage.actionType}}- {{logMessage.actionValue}}
+        </li>
+      </ul>
+
     </section>
   </div>
 
